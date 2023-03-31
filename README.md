@@ -1,2 +1,2 @@
 # RizzGPT
-RizzGPT: The ultimate wingman that will rate your pick-up line.
+RizzGPT: The ultimate wingman.
