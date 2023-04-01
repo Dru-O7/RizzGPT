@@ -1,0 +1,28 @@
+{
+  "name": "openai",
+  "version": "1.0.0",
+  "description": "RizzGPT: The ultimate wingman.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dru-O7/RizzGPT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dru-O7/RizzGPT/issues"
+  },
+  "homepage": "https://github.com/Dru-O7/RizzGPT#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "openai": "^3.2.1",
+    "twilio": "^4.9.0"
+  }
+}

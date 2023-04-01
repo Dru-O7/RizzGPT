@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="../index.html">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="Rizzbot.html"
@@ -51,5 +51,55 @@
       integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
       crossorigin="anonymous"
     ></script>
+
+    <h1>Pickup Line Feedback</h1>
+  <form id="feedbackForm">
+    <label for="pickupLine">Pickup Line:</label>
+    <input type="text" id="pickupLine" name="pickupLine"><br>
+
+    <label for="feedback">Feedback:</label>
+    <textarea id="feedback" name="feedback"></textarea><br>
+
+    <label for="rating">Rating:</label>
+    <input type="number" id="rating" name="rating" min="1" max="10"><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    const form = document.querySelector("#feedbackForm");
+    const resultsDiv = document.querySelector("#results");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const pickupLine = document.querySelector("#pickupLine").value;
+      const feedback = document.querySelector("#feedback").value;
+      const rating = document.querySelector("#rating").value;
+
+      const response = await fetch("/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pickupLine,
+          feedback,
+          rating
+        })
+      });
+
+      const data = await response.json();
+
+      let resultsHTML = "<h2>Better Options:</h2>";
+      for (let i = 0; i < data.betterOptions.length; i++) {
+        resultsHTML += "<p>" + data.betterOptions[i] + "</p>";
+      }
+
+      resultsDiv.innerHTML = resultsHTML;
+    });
+  </script>
   </body>
 </html>
