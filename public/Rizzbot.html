@@ -10,7 +10,7 @@
       integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -41,6 +41,9 @@
               <a class="nav-link" href="Blog.html">Blog</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="leaderboard.html">Leaderboard</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="ContactUs.html">Contact Us</a>
             </li>
           </ul>
@@ -53,81 +56,84 @@
       crossorigin="anonymous"
     ></script>
     <h1>RizzGPT - AI Wingman!</h1>
-  
-  <form id="pickupLineForm">
-    <label class="user-label">Enter Pickup Line</label>
-    <div class="inputGroup">
-      <input type="text" class="input" id="pickupLine" name="pickupLine">
-      
-      <br>
-      <br>
-    </div>
-    
-    <button type="button" onclick="getFeedback()">Get Feedback</button>
-    <button type="button" onclick="getRating()">Get Rating</button>
-    <button type="button" onclick="getBetterOptions()">Get Better Options</button>
-    
-  </form>
-  
-  <div id="feedbackResult"></div>
-  <div id="ratingResult"></div>
-  <div id="betterOptionsResult"></div>
 
-  <script>
-    const form = document.getElementById('pickupLineForm');
-    const feedbackResult = document.getElementById('feedbackResult');
-    const ratingResult = document.getElementById('ratingResult');
-    const betterOptionsResult = document.getElementById('betterOptionsResult');
+    <form id="pickupLineForm">
+      <label class="user-label">Enter Pickup Line</label>
+      <div class="inputGroup">
+        <input type="text" class="input" id="pickupLine" name="pickupLine" />
 
-    async function getFeedback() {
-      const pickupLine = form.elements.pickupLine.value;
-      const response = await fetch('/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pickupLine })
-      });
-      const { feedback } = await response.json();
-      feedbackResult.innerHTML = `Feedback: ${feedback}`;
-    }
+        <br />
+        <br />
+      </div>
 
-    async function getRating() {
-      const pickupLine = form.elements.pickupLine.value;
-      const response = await fetch('/rating', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pickupLine })
-      });
-      
-      const { rating } = await response.json();
-      ratingResult.innerHTML = `Rating: ${rating}`;
-    }
+      <button type="button" onclick="getFeedback()">Get Feedback</button>
+      <button type="button" onclick="getRating()">Get Rating</button>
+      <button type="button" onclick="getBetterOptions()">
+        Get Better Options
+      </button>
+    </form>
 
-  async function getBetterOptions() {
-    const pickupLine = form.elements.pickupLine.value;
-    const response = await fetch('/better-options', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ pickupLine })
-    });
-    const { betterOptions } = await response.json();
-    betterOptionsResult.innerHTML = `Better Options: ${betterOptions}`;
-    if (betterOptions) {
-      const copyBtn = document.createElement('button');
-      copyBtn.className = 'btn btn-secondary';
-      copyBtn.innerHTML = 'Copy to Clipboard';
-      copyBtn.onclick = function() {
-        navigator.clipboard.writeText(betterOptions);
-        alert('Copied to clipboard!');
-      };
-      betterOptionsResult.appendChild(copyBtn);
-    }
-  }
-  </script>
+    <div id="feedbackResult"></div>
+    <div id="ratingResult"></div>
+    <div id="betterOptionsResult"></div>
+
+    <script>
+      const form = document.getElementById("pickupLineForm");
+      const feedbackResult = document.getElementById("feedbackResult");
+      const ratingResult = document.getElementById("ratingResult");
+      const betterOptionsResult = document.getElementById(
+        "betterOptionsResult"
+      );
+
+      async function getFeedback() {
+        const pickupLine = form.elements.pickupLine.value;
+        const response = await fetch("/feedback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ pickupLine }),
+        });
+        const { feedback } = await response.json();
+        feedbackResult.innerHTML = `Feedback: ${feedback}`;
+      }
+
+      async function getRating() {
+        const pickupLine = form.elements.pickupLine.value;
+        const response = await fetch("/rating", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ pickupLine }),
+        });
+
+        const { rating } = await response.json();
+        ratingResult.innerHTML = `Rating: ${rating}`;
+      }
+
+      async function getBetterOptions() {
+        const pickupLine = form.elements.pickupLine.value;
+        const response = await fetch("/better-options", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ pickupLine }),
+        });
+        const { betterOptions } = await response.json();
+        betterOptionsResult.innerHTML = `Better Options: ${betterOptions}`;
+        if (betterOptions) {
+          const copyBtn = document.createElement("button");
+          copyBtn.className = "btn btn-secondary";
+          copyBtn.innerHTML = "Copy to Clipboard";
+          copyBtn.onclick = function () {
+            navigator.clipboard.writeText(betterOptions);
+            alert("Copied to clipboard!");
+          };
+          betterOptionsResult.appendChild(copyBtn);
+        }
+      }
+    </script>
   </body>
 </html>
