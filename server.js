@@ -20,50 +20,84 @@ let conversationLog = [];
 
 // Define a function to generate a prompt for the GPT
 function generatePrompt(pickupLine) {
-    return `
-      The following is a pickup line that needs feedback:
-  
-      Pickup line: ${pickupLine}
-      
-      Feedback:
-      `;
-}
-
+    return `Rate and provide feedback for the following pickup line: If suggesting better options suggest 10/10 rated pickup line alternative the user could use
+    Pickup line: ${pickupLine}
+    Your feedback:
+    Feedback: [positive/neutral/negative]
+    Rating: [1-10]
+    Better options: [comma-separated list of better pickup lines]`;
+  }
 // Define a function to handle a user's feedback and generate potential better options of the same pickup line
-async function handleFeedback(pickupLine, feedback, rating) {
-  const prompt = generatePrompt(pickupLine) + feedback;
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-002",
-    prompt: prompt,
-    max_tokens: 128,
-    n: 1,
-    stop: "\n",
-    temperature: 0.5,
-  });
+function getFeedback(pickupLine) {
+    const prompt = `provide feedback for the following pickup line: ${pickupLine}\nFeedback should tell the positive and negatives of the given pickup line. be as blunt as possible\n`;
+  
+    return openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: prompt,
+      max_tokens: 128,
+    }).then(response => {
+      const feedback = response.data.choices[0].text.trim();
+      return { feedback };
+    });
+  }
+  
+  function getRating(pickupLine) {
+    const prompt = `Rate the following pickup line on the basis of creativity, originality, romantic approach and respect.: ${pickupLine}\nRating should be out of 10, also state the reason behind the rating\n`;
+  
+    return openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: prompt,
+      max_tokens: 64,
+    }).then(response => {
+      const rating = response.data.choices[0].text.trim();
+      return { rating };
+    });
+  }
+  
+  function getBetterOptions(pickupLine) {
+    const prompt = `Suggest better pickup line than the following: ${pickupLine}\nBetter option should be a 10/10 pickup line according to you which satisfies every criteria such as originality, creativity, respect, romance, etc.:\n ONLY SHOW 1 PickUP LINE, NO MORE!`;
+  
+    return openai.createCompletion({
+      model: "text-davinci-002",
+      prompt: prompt,
+      max_tokens: 256,
+    }).then(response => {
+      const betterOptions = response.data.choices[0].text.trim();
+      return { betterOptions };
+    });
+  }
+  
 
-  const betterOptions = response.data.choices[0].text.trim().split("\n");
 
-  conversationLog.push({ pickupLine: pickupLine, feedback: feedback, rating: rating, betterOptions: betterOptions });
-
-  return betterOptions;
-}
-
-// Define a route to handle incoming feedback
-app.post("/feedback", async (req, res) => {
-  const pickupLine = req.body.pickupLine;
-  const feedback = req.body.feedback;
-  const rating = req.body.rating;
-
-  const betterOptions = await handleFeedback(pickupLine, feedback, rating);
-
-  res.json({ betterOptions });
-});
+  
 
 // Define a route to retrieve the conversation log
 app.get("/log", (req, res) => {
-    res.json({ conversationLog });
+  res.json({ conversationLog });
 });
+
+// Handle "Get Feedback" AJAX request
+app.post("/feedback", async (req, res) => {
+    const { pickupLine } = req.body;
+    const { feedback } = await getFeedback(pickupLine);
+    res.json({ feedback });
+  });
+  
+  // Handle "Get Rating" AJAX request
+  app.post("/rating", async (req, res) => {
+    const { pickupLine } = req.body;
+    const { rating } = await getRating(pickupLine);
+    res.json({ rating });
+  });
+  
+  // Handle "Get Better Options" AJAX request
+  app.post("/better-options", async (req, res) => {
+    const { pickupLine } = req.body;
+    const { betterOptions } = await getBetterOptions(pickupLine);
+    res.json({ betterOptions });
+  });
+  
 
 // Start the server
 const PORT = process.env.PORT || 3000;
