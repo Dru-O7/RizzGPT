@@ -72,9 +72,12 @@
     
   </form>
   
-  <div id="feedbackResult"></div>
-  <div id="ratingResult"></div>
-  <div id="betterOptionsResult"></div>
+  <div class="card">
+    <div id="feedbackResult"></div>
+    <div id="ratingResult"></div>
+    <div id="betterOptionsResult"></div>
+  </div>
+ 
 
   <script>
     const form = document.getElementById('pickupLineForm');
@@ -122,7 +125,7 @@
     betterOptionsResult.innerHTML = `Better Options: ${betterOptions}`;
     if (betterOptions) {
     const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-secondary';
+    copyBtn.className = ' button2';
     copyBtn.innerHTML = 'Copy to Clipboard';
     copyBtn.onclick = function() {
       navigator.clipboard.writeText(betterOptions);
@@ -131,7 +134,7 @@
     
     // Create a new button for sending to phone
         const sendToPhoneBtn = document.createElement('button');
-    sendToPhoneBtn.className = 'btn btn-secondary';
+    sendToPhoneBtn.className = ' button2';
     sendToPhoneBtn.innerHTML = 'Send to Phone';
     sendToPhoneBtn.onclick = function() {
       // Call the '/send-to-phone' route to send the message using Twilio
