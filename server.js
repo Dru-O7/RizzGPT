@@ -10,6 +10,10 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_KEY,
 });
@@ -68,7 +72,21 @@ function getFeedback(pickupLine) {
     });
   }
   
-
+  app.post('/send-to-phone', async (req, res) => {
+    const { betterOptions } = req.body;
+    try {
+      const message = await client.messages.create({
+        body: betterOptions,
+        from: process.env.TWILIO_PHONE,
+        to: process.env.MY_PHONE
+      });
+      console.log(`Message sent to ${message.to}`);
+      res.send('Message sent!');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error sending message');
+    }
+  });
 
   
 
