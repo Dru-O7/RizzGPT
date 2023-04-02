@@ -30,7 +30,7 @@
   <p align="center">
     your personal AI wingman!
     <br />
-    <a href="https://www.youtube.com/watch?v=3ZCMxn9KC8w"><strong>Demo Video Link! »</strong></a>
+    <a href="https://www.youtube.com/watch?v=SfHPnzGl8rc"><strong>Demo Video Link! »</strong></a>
     <br />
     <br />
     <a href="https://devpost.com/software/rizzgpt">Devpost Link</a>
